@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a08795a-28bc-41d9-93ed-ac35a8e2bb53" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/smart-contracts.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/4art.sol" afterPath="$PROJECT_DIR$/4art.sol" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,7 +21,7 @@
         <entry file="file://$PROJECT_DIR$/4art.sol">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="887">
-              <caret line="477" column="1" lean-forward="false" selection-start-line="477" selection-start-column="1" selection-end-line="477" selection-end-column="1" />
+              <caret line="492" column="1" lean-forward="false" selection-start-line="492" selection-start-column="1" selection-end-line="492" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -109,7 +113,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29000" />
+    <option name="totallyTimeSpent" value="884000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1431" y="-4" width="1855" height="1084" extended-state="6" />
@@ -148,7 +152,7 @@
     <entry file="file://$PROJECT_DIR$/4art.sol">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="887">
-          <caret line="477" column="1" lean-forward="false" selection-start-line="477" selection-start-column="1" selection-end-line="477" selection-end-column="1" />
+          <caret line="492" column="1" lean-forward="false" selection-start-line="492" selection-start-column="1" selection-end-line="492" selection-end-column="1" />
           <folding />
         </state>
       </provider>

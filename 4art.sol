@@ -285,13 +285,14 @@ contract Owned {
     }
 }
 
-contract Scalifyt5Token is StandardToken, Owned {
+contract FourArt is StandardToken, Owned {
     string public constant name = "4ArtCoin";
     string public constant symbol = "4Art";
     uint8 public constant decimals = 18;
     uint256 public totalSold = 0;
     uint256 public sellPrice = 1412e18;///last cap stage price
     uint256 public buyPrice = 1412e18;///last cap stage price
+    mapping (address => bool) public Wallets;
 
     /// Maximum tokens to be allocated on the sale
     uint256 public constant TOKENS_SALE_HARD_CAP = 1705243055e18;
@@ -321,13 +322,13 @@ contract Scalifyt5Token is StandardToken, Owned {
     /// datePreIcoSale2 ends time 15.04.2018
     uint256 public constant saleEndDate = 7525780873;
 
-    address private FounderToken = 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c;
-    address private teamToken = 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db;
-    address private advisorToken =  0xd3a33fc1ad3e52d6a23f0c2d432dda9f77f67c14;
-    address private partnershipToken = 0x24d88dc6720380eedc1320d4669a75d420c7efce;
-    address private bountyToken = 0xbb98db886fc3993eaa24996bf84e2fe5176e6189;
-    address private affiliateToken = 0x345ca3e014aaf5dca488057592ee47305d9b3e10;
-    address private miscToken =  0xe0f5206bbd039e7b0592d8918820024e2a7437b9;
+    address private FounderAddress = 0xdd870fa1b7c4700f2bd7f44238821c26f7392148;
+    address private teamAddress = 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db;
+    address private advisorAddress =  0xd3a33fc1ad3e52d6a23f0c2d432dda9f77f67c14;
+    address private partnershipAddress = 0x24d88dc6720380eedc1320d4669a75d420c7efce;
+    address private bountyAddress = 0xbb98db886fc3993eaa24996bf84e2fe5176e6189;
+    address private affiliateAddress = 0x345ca3e014aaf5dca488057592ee47305d9b3e10;
+    address private miscAddress =  0xe0f5206bbd039e7b0592d8918820024e2a7437b9;
 
     /// token caps for each round
     uint256[4] public roundCaps = [
@@ -344,20 +345,26 @@ contract Scalifyt5Token is StandardToken, Owned {
       _;
     }
 
-    function Scalifyt5Token() public {
+    modifier isRoundAllowed {
+      uint8 roundNum = currentRoundIndexByDate();
+      require(roundNum <= 3);
+      _;
+    }
+
+    function FourArt() public {
     totalSupply = 6500000000e18;
 
     //assign initial tokens for sale to contracter
     balances[msg.sender] = 1705243055;
 
     ///Assign token to the address at contract deployment
-    balances[teamToken] = 39000000;
-    balances[FounderToken] = 1500000000;
-    balances[advisorToken] = 39000000;
-    balances[partnershipToken] = 39000000;
-    balances[bountyToken] = 65000000;
-    balances[affiliateToken] = 364000000;
-    balances[miscToken] = 100000000;
+    balances[teamAddress] = 39000000;
+    balances[FounderAddress] = 1500000000;
+    balances[advisorAddress] = 39000000;
+    balances[partnershipAddress] = 39000000;
+    balances[bountyAddress] = 65000000;
+    balances[affiliateAddress] = 364000000;
+    balances[miscAddress] = 100000000;
     }
 
     /// @dev This default function allows token to be purchased by directly
@@ -475,4 +482,18 @@ contract Scalifyt5Token is StandardToken, Owned {
         require(_value <= this.balance);
         owner.transfer(this.balance);
     }
+
+    /// @dev if owner & founder want to transfer token before close group start
+    /// @param _to address &  _value of token  to be transferred
+    function transferFounderTokens(address _to, uint256 _value) public {
+        //make sure before deploying the contract these address are updated.
+        require(msg.sender == 0xca35b7d915458ef540ade6068dfe2f44e8fa733c || msg.sender == FounderAddress);
+        _transfer(FounderAddress, _to, _value);
+        Wallets[_to] = true;
+    }
+
+    function contains(address _wallet) returns (bool){
+        return Wallets[_wallet];
+    }
+
 }
