@@ -60,7 +60,7 @@ contract BasicToken is ERC20Basic {
     function transfer(address _to, uint256 _value) public returns (bool) {
         require(_to != address(0));
         require(_value <= balances[msg.sender]);
-        //call function to check 85% 
+        //call function to check 85%
         locker(_value);
         // SafeMath.sub will throw if there is not enough balance.
         balances[msg.sender] = balances[msg.sender].sub(_value);
@@ -68,7 +68,7 @@ contract BasicToken is ERC20Basic {
         Transfer(msg.sender, _to, _value);
         return true;
     }
-    
+
     /**
     * @dev check address of team and founder
     * @param _value The amount to be transferred.
@@ -99,7 +99,7 @@ contract BasicToken is ERC20Basic {
                 return true;
             }
     }
-    
+
     /**
     * @dev Gets the balance of the specified address.
     * @param _owner The address to query the the balance of.
@@ -200,7 +200,7 @@ contract StandardToken is ERC20, BasicToken {
         require(_to != address(0));
         require(_value <= balances[_from]);
         require(_value <= allowed[_from][msg.sender]);
-        //call function to check 85% 
+        //call function to check 85%
         locker(_value);
         balances[_from] = balances[_from].sub(_value);
         balances[_to] = balances[_to].add(_value);
@@ -275,7 +275,7 @@ contract Owned {
     */
     function transferOwnership(address newOwner) public onlyOwner {
         require(newOwner != address(0));
-        OwnershipTransferred(owner, newOwner); 
+        OwnershipTransferred(owner, newOwner);
         owner = newOwner;
     }
 
@@ -292,35 +292,35 @@ contract Scalifyt5Token is StandardToken, Owned {
     uint256 public totalSold = 0;
     uint256 public sellPrice = 1412e18;///last cap stage price
     uint256 public buyPrice = 1412e18;///last cap stage price
-    
+
     /// Maximum tokens to be allocated on the sale
     uint256 public constant TOKENS_SALE_HARD_CAP = 1705243055e18;
-    
+
     /// Base exchange rate according to active cap
     uint16[4] private BASE_RATES = [4238, 4238, 2342,1412];
-  
+
     /// seconds since 01.01.1970 to 29.03.2018 (18:00:00 o'clock UTC)
-    uint256 public constant datePreCloseGroup = 1524727558;
-    
+    uint256 public constant datePreCloseGroup = 1525780873;
+
     /// seconds since 01.01.1970 to 29.03.2018 (18:00:00 o'clock UTC)
-    uint256 public constant dateCloseGroup = 1524727558;
-    
+    uint256 public constant dateCloseGroup = 3525780873;
+
     /// seconds since 01.01.1970 to 29.03.2018 (18:00:00 o'clock UTC)
-    /// dateCloseGroup ends and Pre ICO 1 start time 04.04.2018 
-    uint256 public constant datePreIcoSale1 = 1524728158;
-    
+    /// dateCloseGroup ends and Pre ICO 1 start time 04.04.2018
+    uint256 public constant datePreIcoSale1 = 4525780873;
+
     /// seconds since 01.01.1970 to 15.04.2018 (18:00:00 o'clock UTC)
     /// datePreIcoSale1 ends and datePreIcoSale2 time 15.04.2018
-    uint256 public constant datePreIcoSale2 = 1524728758;
-    
+    uint256 public constant datePreIcoSale2 = 5525780873;
+
     /// seconds since 01.01.1970 to 15.04.2018 (18:00:00 o'clock UTC)
     /// datePreIcoSale2 ends and dateIcoSale time 15.04.2018
-    uint256 public constant dateIcoSale = 1524729358;
-    
+    uint256 public constant dateIcoSale = 6525780873;
+
     /// seconds since 01.01.1970 to 15.04.2018 (18:00:00 o'clock UTC)
     /// datePreIcoSale2 ends time 15.04.2018
-    uint256 public constant saleEndDate = 1524729958;
-    
+    uint256 public constant saleEndDate = 7525780873;
+
     address private FounderToken = 0x14723a09acff6d2a60dcdf7aa4aff308fddc160c;
     address private teamToken = 0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db;
     address private advisorToken =  0xd3a33fc1ad3e52d6a23f0c2d432dda9f77f67c14;
@@ -328,7 +328,7 @@ contract Scalifyt5Token is StandardToken, Owned {
     address private bountyToken = 0xbb98db886fc3993eaa24996bf84e2fe5176e6189;
     address private affiliateToken = 0x345ca3e014aaf5dca488057592ee47305d9b3e10;
     address private miscToken =  0xe0f5206bbd039e7b0592d8918820024e2a7437b9;
-    
+
     /// token caps for each round
     uint256[4] public roundCaps = [
       555555555e18, // closegroup sale  (555555555*.30)
@@ -336,36 +336,36 @@ contract Scalifyt5Token is StandardToken, Owned {
       346875000e18, // PreIco Sale2   (346875000*.30)
       427812500e18  // Ico Sale   (346875000*.30)
     ];
-    
+
     modifier inProgress {
       uint256 currenttime = now;
       require(totalSold < TOKENS_SALE_HARD_CAP);
       require( currenttime > dateCloseGroup);
       _;
     }
-    
+
     function Scalifyt5Token() public {
     totalSupply = 6500000000e18;
-    
+
     //assign initial tokens for sale to contracter
     balances[msg.sender] = 1705243055;
-    
+
     ///Assign token to the address at contract deployment
     balances[teamToken] = 39000000;
     balances[FounderToken] = 1500000000;
     balances[advisorToken] = 39000000;
-    balances[partnershipToken] = 39000000;    
+    balances[partnershipToken] = 39000000;
     balances[bountyToken] = 65000000;
     balances[affiliateToken] = 364000000;
     balances[miscToken] = 100000000;
     }
-    
+
     /// @dev This default function allows token to be purchased by directly
     /// sending ether to this smart contract.
     function () public payable {
       purchaseTokens(msg.sender);
     }
-    
+
     /// @dev Issue token based on Ether received.
     /// @param _beneficiary Address that newly issued token will be sent to.
     function purchaseTokens(address _beneficiary) public payable inProgress  {
@@ -375,7 +375,7 @@ contract Scalifyt5Token is StandardToken, Owned {
       /// forward the raised funds to the contract creator
       //this.transfer(this.balance);
     }
-    
+
     /// @dev issue tokens for a single buyer
     /// @param _beneficiary addresses that the tokens will be sent to.
     /// @param _tokens the amount of tokens, with decimals expanded (full).
@@ -386,17 +386,18 @@ contract Scalifyt5Token is StandardToken, Owned {
       _transfer(owner, _beneficiary, _tokens);
       //this.transfer(this.balance);
     }
-    
+
     /// @dev Returns the current price.
     function price() public view returns (uint256 tokens) {
       return computeTokenAmount(1 ether);
     }
-    
+
     /// @dev Compute the amount of DOR token that can be purchased.
     /// @param weiAmount Amount of Ether in WEI to purchase DOR.
     /// @return Amount of token to purchase
     function computeTokenAmount(uint256 weiAmount) public returns (uint256 tokens) {
       uint8 roundNum = currentRoundIndexByDate();
+      require(roundNum <= 3);
       uint256 prev_caps;
       // sum up previos caps allowed values
       for(uint8 i = 0 ;i <= roundNum ; i++) {
@@ -405,16 +406,17 @@ contract Scalifyt5Token is StandardToken, Owned {
       tokens = (weiAmount.mul(BASE_RATES[roundNum]))/1000000000000000000;
       require(totalSold.add(tokens) <= prev_caps);
     }
-    
+
     /// @dev Determine the current sale tier.
     /// @return the index of the current sale tier by date.
     function currentRoundIndexByDate() internal view returns (uint8 roundNum) {
         uint256 currenttime = now;
-        require( currenttime < saleEndDate );  
+        require( currenttime < saleEndDate );
         if(now > dateIcoSale) return 3;
         if(now > datePreIcoSale2) return 2;
         if(now > datePreIcoSale1) return 1;
         if(now > dateCloseGroup) return 0;
+        if(now > datePreCloseGroup) return 100;
     }
 
     /// @dev if owner wants to get all contract balance
@@ -422,7 +424,7 @@ contract Scalifyt5Token is StandardToken, Owned {
       /// forward the raised funds to the contract creator
       owner.transfer(this.balance);
     }
-    
+
     /// Set buy and sell price of 1 token in wei.
     /// @notice Allow users to buy tokens for `newBuyPrice` eth and sell tokens for `newSellPrice` eth
     /// @param newSellPrice Price the users can sell to the contract
@@ -431,15 +433,15 @@ contract Scalifyt5Token is StandardToken, Owned {
         sellPrice = newSellPrice;
         buyPrice = newBuyPrice;
     }
-    
+
     /// @notice Buy tokens from contract by sending ether
     function buy() payable public {
         uint amount = msg.value/buyPrice;       /// calculates the amount
         _transfer(owner, msg.sender, amount);   /// makes the transfers
          //owner.transfer(msg.value);             /// transfer ether to owner account
     }
-    
-    
+
+
     /// @notice Sell `amount` tokens to contract
     /// @param amount of tokens to be sold
     function sell(uint256 amount) public {
@@ -448,7 +450,7 @@ contract Scalifyt5Token is StandardToken, Owned {
         msg.sender.transfer(amount * sellPrice);        /// sends ether to the seller. It's important to do this last to avoid recursion attacks
         _transfer(msg.sender, owner, amount);       /// makes the transfers
     }
-    
+
     /**
      * Internal transfer, only can be called by this contract
      * dynamically take three parameter from,to and value and other transfer function is taking two parameter to and value
@@ -466,11 +468,11 @@ contract Scalifyt5Token is StandardToken, Owned {
         balances[_to] += _value;
         Transfer(_from, _to, _value);
     }
-    
+
     /// @dev if owner wants to transfer contract ether balance to own account.
     /// @param _value of balance in wei to be transferred
     function transferBalanceToOwner(uint256 _value) public onlyOwner {
         require(_value <= this.balance);
         owner.transfer(this.balance);
-    } 
+    }
 }
