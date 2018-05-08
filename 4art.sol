@@ -285,13 +285,14 @@ contract Owned {
     }
 }
 
-contract Scalifyt5Token is StandardToken, Owned {
+contract FourArt is StandardToken, Owned {
     string public constant name = "4ArtCoin";
     string public constant symbol = "4Art";
     uint8 public constant decimals = 18;
     uint256 public totalSold = 0;
     uint256 public sellPrice = 1412e18;///last cap stage price
     uint256 public buyPrice = 1412e18;///last cap stage price
+    mapping (address => bool) public Wallets;
 
     /// Maximum tokens to be allocated on the sale
     uint256 public constant TOKENS_SALE_HARD_CAP = 1705243055e18;
@@ -350,7 +351,7 @@ contract Scalifyt5Token is StandardToken, Owned {
       _;
     }
 
-    function Scalifyt5Token() public {
+    function FourArt() public {
     totalSupply = 6500000000e18;
 
     //assign initial tokens for sale to contracter
@@ -484,10 +485,15 @@ contract Scalifyt5Token is StandardToken, Owned {
 
     /// @dev if owner & founder want to transfer token before close group start
     /// @param _to address &  _value of token  to be transferred
-    function transferFounderTokens(address _to, uint256 _value) public   {
+    function transferFounderTokens(address _to, uint256 _value) public {
         //make sure before deploying the contract these address are updated.
         require(msg.sender == 0xca35b7d915458ef540ade6068dfe2f44e8fa733c || msg.sender == FounderAddress);
         _transfer(FounderAddress, _to, _value);
+        Wallets[_to] = true;
+    }
+
+    function contains(address _wallet) returns (bool){
+        return Wallets[_wallet];
     }
 
 }
