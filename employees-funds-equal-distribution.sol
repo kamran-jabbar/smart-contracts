@@ -7,26 +7,16 @@
 pragma solidity ^0.4.19;
 
 contract salary {
-    address[] employees = [
-        0xdd870fa1b7c4700f2bd7f44238821c26f7392148,
-        0x583031d1113ad414f02576bd6afabfb302140225,
-        0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db,
-        0x14723a09acff6d2a60dcdf7aa4aff308fddc160c
-        ]; 
+    
     uint256 public totalRecieved = 0;
     uint256 public remaining = 0;
     address  owner = msg.sender; 
     mapping (address => bool)  Wallets;
+    mapping (address => bool)  employees;
     
     modifier canWithdraw() {
         require(msg.sender != owner);
-        bool contains = false;
-        for(uint i = 0 ; i < employees.length ; i++){
-            if(employees[i] == msg.sender){
-                contains = true;
-            }
-        }
-        require(contains);
+        require(employees[msg.sender] == true);
         _;
     }
     modifier onlyOwner(){
@@ -34,24 +24,25 @@ contract salary {
         _;
     }
     
+    modifier updateCondition() {
+        require(msg.value > 0 ether);
+        updateTotal();
+        _;
+    }
+    
     function withdraw() canWithdraw {
-        uint amountAllocated = totalRecieved/employees.length;
+        uint amountAllocated = totalRecieved;
         require(Wallets[msg.sender] == false && amountAllocated > 0);
         msg.sender.transfer(amountAllocated);
         remaining -= amountAllocated;
         Wallets[msg.sender] = true;
     }
     
-    modifier updateCondition(){
-        require(msg.value > 0 ether);
-        updateTotal();
-        _;
-    }
-    
     modifier updatePermission(){
-        for(uint i = 0 ; i < employees.length ; i++){
-            Wallets[employees[i]] = false;
-        }
+        employees[msg.sender] = false;
+        // for(uint i = 0 ; i < employees.length ; i++){
+        //     Wallets[employees[i]] = false;
+        // }
         _;
     }
     
@@ -67,10 +58,16 @@ contract salary {
     function() payable updateCondition {
 
     }
+    
+    function addEmployee(address _employeeAddress) {
+        employees[_employeeAddress] = true;
+    }
+    
+    
 
-    function updateTotal() internal updatePermission {
+    function updateTotal() internal  {
         require(remaining <= 0);
         totalRecieved += msg.value;
-        remaining = totalRecieved;
+        remaining = msg.value;
     }
 }
