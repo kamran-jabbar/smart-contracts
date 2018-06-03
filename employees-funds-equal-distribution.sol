@@ -40,9 +40,6 @@ contract salary {
     
     modifier updatePermission(){
         employees[msg.sender] = false;
-        // for(uint i = 0 ; i < employees.length ; i++){
-        //     Wallets[employees[i]] = false;
-        // }
         _;
     }
     
@@ -62,8 +59,6 @@ contract salary {
     function addEmployee(address _employeeAddress) {
         employees[_employeeAddress] = true;
     }
-    
-    
 
     function updateTotal() internal  {
         require(remaining <= 0);
