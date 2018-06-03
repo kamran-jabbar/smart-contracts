@@ -7,7 +7,6 @@
 pragma solidity ^0.4.19;
 
 contract salary {
-    
     uint256 public totalRecieved = 0;
     uint256 public remaining = 0;
     address  owner = msg.sender; 
@@ -19,6 +18,7 @@ contract salary {
         require(employees[msg.sender] == true);
         _;
     }
+
     modifier onlyOwner(){
         require(msg.sender == owner);
         _;
