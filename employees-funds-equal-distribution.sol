@@ -1,6 +1,5 @@
 /**
  * This contract is based on to send equal ethers/salary to four employees
- * Owner can deposit ethers contract and once all the employees withdraw ethers owner can depost more ether
  * Author: Kamran Jabbar
  * */
 
